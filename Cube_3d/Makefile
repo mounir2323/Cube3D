@@ -2,12 +2,11 @@ NAME		=	CUBE3D
 CC			=	cc
 AR			=	ar rcs
 RM			=	rm -rf
-# CFLAGS		=	-Wall -Wextra -Werror -g -Iincludes
-CFLAGS		=	-Wall -Wextra -Werror -g -I/path/to/minilibx -Iincludes
+CFLAGS		=	-Wall -Wextra -Werror -g -I/path/to/minilibx -Iincludes -O3 -ffast-math
 GLFW_FLAGS	=	-ldl -lglfw -L /Users/$(USER)/.brew/Cellar/glfw/3.3.8/lib
 LIBFT_PATH	=	libs/libft/libft.a
 MLX_PATH	=	libs/MLX42/build/libmlx42.a
-SRC			=	test.c
+SRC			=	main.c init.c test.c
 OBJ			=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 OBJ_DIR		=	obj
 
@@ -45,7 +44,6 @@ install: install_brew install_glfw
 clean:
 	rm -rf $(OBJ_DIR)
 	@make -C ./libs/libft clean --silent
-	@make -C ./libs/ft_printf clean --silent
 	@make -C ./libs/MLX42/build clean --silent
 	clear
 
