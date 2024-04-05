@@ -6,7 +6,7 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 15:39:56 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/01 00:11:57 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/05 02:02:58 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,60 +29,68 @@
 # include <sys/wait.h>
 # include <unistd.h> 
 # include "MLX42.h"
+# include "libft.h"
 
 # define WIDTH 720
 # define HEIGHT 720
 # define IMG_W 64
-# define TILE_SIZE 30 // tile size
-# define FOV 60 // field of view
+# define TILE_SIZE 40 // tile size
+# define FOV_RAD 80 * (M_PI/180) // field of view in rad
 # define ROTATION_SPEED 0.045 // rotation speed
 # define PLAYER_SPEED 3 // player speed
 
 typedef struct s_player //the player structure
 {
- int  plyr_x; // player x position in pixels
- int  plyr_y; // player y position in pixels
- double init_direction; // player angle
- float fov_rd; // field of view in radians
- int  rot_flag; // rotation flag
- int	l_r; // left right flag
- int  u_d; // up down flag
-} t_player;
+	int		plyr_x;
+	int		plyr_y;
+	double	init_direction;
+	int		rot_flag;
+	int		l_r;
+	int		u_d;
+}					t_player;
 
 typedef struct s_rayon //the ray structure
 {
- double ray_ngl; // ray angle
- double distance; // distance to the wall
- bool  flag;  // flag for the wall
-} t_rayon;
+	double	ray_ngl; // ray angle
+	double	distance; // distance to the wall
+	bool	flag;  // flag for the wall
+}					t_rayon;
 
-typedef struct s_data //the data structure
+typedef struct map //the data structure
 {
- char **map2d; // the map
- int  p_x;  // player x position in the map
- int  p_y;  // player y position in the map
- int  w_map;  // map width
- int  h_map;  // map height
-} t_data;
+	char	**map;
+	int		p_x;
+	int		p_y;
+	int		map_width;
+	int		map_height;
+	mlx_texture_t	*wall[4];
+	mlx_image_t		*img;
+
+}		t_map;
 
 typedef struct s_mlx
 {
-	mlx_image_t	*img;
-	mlx_t		*mlx_p;
-	t_rayon		*ray;
-	t_data		*dt;
-	t_player	*ply;
+	mlx_image_t		*img;
+	mlx_t			*mlx_p;
+	t_rayon			*ray;
+	t_map			*map;
+	t_player		*ply;
 }				t_mlx;
 
 
-t_data *init_argumet() ;
-void start_the_game(t_data *dt);
+
+
+
+
+// t_data *init_argumet() ;
+void start_the_game(t_map *dt);
 void hook(t_mlx *mlx, double move_x, double move_y);
 void cast_rays(t_mlx *mlx);
 void mlx_key(mlx_key_data_t keydata, void *ml) ;
+void game_loop(void *ml) ;
 void ft_exit(t_mlx *mlx)  ;
-
-
+void init_the_player(t_mlx mlx) ;// init the player structure
+char	**ft_splitmaps(int fd);
 
 
 

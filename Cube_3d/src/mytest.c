@@ -2,6 +2,12 @@
 
 
 
+void init_cube()
+{
+	
+}
+
+
 // //##############################################################################//
 // //############################## THE EXITING CODE ##############################//
 // //##############################################################################//
@@ -9,10 +15,10 @@
 // void ft_exit(t_mlx *mlx)   // exit the game
 // {
 //  int i = 0;
-//  while (mlx->dt->map2d[i])
-//   free(mlx->dt->map2d[i++]); // free the map line by line
-//  free(mlx->dt->map2d); // free the map
-//  free(mlx->dt); // free the data structure
+//  	while (mlx->map->map[i])
+//   	free(mlx->map->map[i++]); // free the map line by line
+//  	free(mlx->map->map); // free the map
+// 	free(mlx->map); // free the data structure
 //  free(mlx->ply); // free the player structure
 //  free(mlx->ray); // free the ray structure
 //  mlx_delete_image(mlx->mlx_p, mlx->img); // delete the image
@@ -37,9 +43,9 @@
 //  else if (keydata.key == MLX_KEY_W && (keydata.action == MLX_RELEASE))
 //   mlx->ply->u_d = 0;
 //  else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_RELEASE)
-//   mlx->ply->rot = 0;
+//   mlx->ply->rot_flag = 0;
 //  else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_RELEASE)
-//   mlx->ply->rot = 0;
+//   mlx->ply->rot_flag = 0;
 // }
 
 // void mlx_key(mlx_key_data_t keydata, void *ml) // key press
@@ -58,26 +64,26 @@
 //  else if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS) // move up
 //   mlx->ply->u_d = 1;
 //  else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS) // rotate left
-//   mlx->ply->rot = -1;
+//   mlx->ply->rot_flag = -1;
 //  else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS) // rotate right
-//   mlx->ply->rot = 1;
+//   mlx->ply->rot_flag = 1;
 //  ft_reles(keydata, mlx); // release the key
 // }
 
-// void rotate_player(t_mlx *mlx, int i) // rotate the player
+// void	rotate_player(t_mlx *mlx, int i) // rotate the player
 // {
-//  if (i == 1)
-//  {
-//   mlx->ply->angle += ROTATION_SPEED; // rotate right
-//   if (mlx->ply->angle > 2 * M_PI)
-//    mlx->ply->angle -= 2 * M_PI;
-//  }
-//  else
-//  {
-//   mlx->ply->angle -= ROTATION_SPEED; // rotate left
-//   if (mlx->ply->angle < 0)
-//    mlx->ply->angle += 2 * M_PI;
-//  }
+// 	if (i == 1)
+// 	{
+// 		mlx->ply->init_direction += ROTATION_SPEED; // rotate right
+// 		if (mlx->ply->init_direction > 2 * M_PI)
+// 			mlx->ply->init_direction -= 2 * M_PI;
+// 	}
+// 	else
+// 	{
+// 		mlx->ply->init_direction -= ROTATION_SPEED; // rotate left
+// 		if (mlx->ply->init_direction < 0)
+// 			mlx->ply->init_direction += 2 * M_PI;
+// 	}
 // }
 
 // void move_player(t_mlx *mlx, double move_x, double move_y) // move the player
@@ -91,9 +97,9 @@
 //  new_y = roundf(mlx->ply->plyr_y + move_y); // get the new y position
 //  map_grid_x = (new_x / TILE_SIZE); // get the x position in the map
 //  map_grid_y = (new_y / TILE_SIZE); // get the y position in the map
-//  if (mlx->dt->map2d[map_grid_y][map_grid_x] != '1' && \
-//  (mlx->dt->map2d[map_grid_y][mlx->ply->plyr_x / TILE_SIZE] != '1' && \
-//  mlx->dt->map2d[mlx->ply->plyr_y / TILE_SIZE][map_grid_x] != '1')) // check the wall hit and the diagonal wall hit
+//  if (mlx->map->map[map_grid_y][map_grid_x] != '1' && \
+//  (mlx->map->map[map_grid_y][mlx->ply->plyr_x / TILE_SIZE] != '1' && \
+//  mlx->map->map[mlx->ply->plyr_y / TILE_SIZE][map_grid_x] != '1')) // check the wall hit and the diagonal wall hit
 //  {
 //   mlx->ply->plyr_x = new_x; // move the player
 //   mlx->ply->plyr_y = new_y; // move the player
@@ -102,29 +108,29 @@
 
 // void hook(t_mlx *mlx, double move_x, double move_y) // hook the player
 // {
-//  if (mlx->ply->rot == 1) //rotate right
+//  if (mlx->ply->rot_flag == 1) //rotate right
 //   rotate_player(mlx, 1);
-//  if (mlx->ply->rot == -1) //rotate left
+//  if (mlx->ply->rot_flag == -1) //rotate left
 //   rotate_player(mlx, 0);
 //  if (mlx->ply->l_r == 1) //move right
 //  {
-//   move_x = -sin(mlx->ply->angle) * PLAYER_SPEED;
-//   move_y = cos(mlx->ply->angle) * PLAYER_SPEED;
+//   move_x = -sin(mlx->ply->init_direction) * PLAYER_SPEED;
+//   move_y = cos(mlx->ply->init_direction) * PLAYER_SPEED;
 //  }
 //  if (mlx->ply->l_r == -1) //move left
 //  {
-//   move_x = sin(mlx->ply->angle) * PLAYER_SPEED;
-//   move_y = -cos(mlx->ply->angle) * PLAYER_SPEED;
+//   move_x = sin(mlx->ply->init_direction) * PLAYER_SPEED;
+//   move_y = -cos(mlx->ply->init_direction) * PLAYER_SPEED;
 //  }
 //  if (mlx->ply->u_d == 1) //move up
 //  {
-//   move_x = cos(mlx->ply->angle) * PLAYER_SPEED;
-//   move_y = sin(mlx->ply->angle) * PLAYER_SPEED;
+//   move_x = cos(mlx->ply->init_direction) * PLAYER_SPEED;
+//   move_y = sin(mlx->ply->init_direction) * PLAYER_SPEED;
 //  }
 //  if (mlx->ply->u_d == -1) //move down
 //  {
-//   move_x = -cos(mlx->ply->angle) * PLAYER_SPEED;
-//   move_y = -sin(mlx->ply->angle) * PLAYER_SPEED;
+//   move_x = -cos(mlx->ply->init_direction) * PLAYER_SPEED;
+//   move_y = -sin(mlx->ply->init_direction) * PLAYER_SPEED;
 //  }
 //  move_player(mlx, move_x, move_y); // move the player
 // }
@@ -137,11 +143,11 @@
 // {
 //  if (x < 0) // check the x position
 //   return ;
-//  else if (x >= S_W)
+//  else if (x >= WIDTH)
 //   return ;
 //  if (y < 0) // check the y position
 //   return ;
-//  else if (y >= S_H)
+//  else if (y >= HEIGHT)
 //   return ;
 //  mlx_put_pixel(mlx->img, x, y, color); // put the pixel
 // }
@@ -158,10 +164,9 @@
 // void draw_floor_ceiling(t_mlx *mlx, int ray, int t_pix, int b_pix) // draw the floor and the ceiling
 // {
 //  int  i;
-//  int  c;
 
 //  i = b_pix;
-//  while (i < S_H)
+//  while (i < HEIGHT)
 //   my_mlx_pixel_put(mlx, ray, i++, 0xB99470FF); // floor
 //  i = 0;
 //  while (i < t_pix)
@@ -202,17 +207,18 @@
 //  double b_pix;
 //  double t_pix;
 
-//  mlx->ray->distance *= cos(nor_angle(mlx->ray->ray_ngl - mlx->ply->angle)); // fix the fisheye
-//  wall_h = (TILE_SIZE / mlx->ray->distance) * ((S_W / 2) / tan(mlx->ply->fov_rd / 2)); // get the wall height
-//  b_pix = (S_H / 2) + (wall_h / 2); // get the bottom pixel
-//  t_pix = (S_H / 2) - (wall_h / 2); // get the top pixel
-//  if (b_pix > S_H) // check the bottom pixel
-//   b_pix = S_H;
+//  mlx->ray->distance *= cos(nor_angle(mlx->ray->ray_ngl - mlx->ply->init_direction)); // fix the fisheye
+//  wall_h = (TILE_SIZE / mlx->ray->distance) * ((WIDTH / 2) / tan(FOV_RAD/ 2)); // get the wall height
+//  b_pix = (HEIGHT / 2) + (wall_h / 2); // get the bottom pixel
+//  t_pix = (HEIGHT / 2) - (wall_h / 2); // get the top pixel
+//  if (b_pix > HEIGHT) // check the bottom pixel
+//   b_pix = HEIGHT;
 //  if (t_pix < 0) // check the top pixel
 //   t_pix = 0;
 //  draw_wall(mlx, ray, t_pix, b_pix); // draw the wall
 //  draw_floor_ceiling(mlx, ray, t_pix, b_pix); // draw the floor and the ceiling
 // }
+
 
 // //#################################################################################//
 // //############################## THE RAYCASTING CODE ##############################//
@@ -265,10 +271,10 @@
 //   return (0);
 //  x_m = floor (x / TILE_SIZE); // get the x position in the map
 //  y_m = floor (y / TILE_SIZE); // get the y position in the map
-//  if ((y_m >= mlx->dt->h_map || x_m >= mlx->dt->w_map))
+//  if ((y_m >= mlx->map->map_height || x_m >= mlx->map->map_width))
 //   return (0);
-//  if (mlx->dt->map2d[y_m] && x_m <= (int)strlen(mlx->dt->map2d[y_m]))
-//   if (mlx->dt->map2d[y_m][x_m] == '1')
+//  if (mlx->map->map[y_m] && x_m <= (int)strlen(mlx->map->map[y_m]))
+//   if (mlx->map->map[y_m][x_m] == '1')
 //    return (0);
 //  return (1);
 // }
@@ -326,8 +332,8 @@
 //  int  ray;
 
 //  ray = 0;
-//  mlx->ray->ray_ngl = mlx->ply->angle - (mlx->ply->fov_rd / 2); // the start angle
-//  while (ray < S_W) // loop for the rays
+//  mlx->ray->ray_ngl = mlx->ply->init_direction - (FOV_RAD / 2); // the start angle
+//  while (ray < WIDTH) // loop for the rays
 //  {
 //   mlx->ray->flag = 0; // flag for the wall
 //   h_inter = get_h_inter(mlx, nor_angle(mlx->ray->ray_ngl)); // get the horizontal intersection
@@ -341,116 +347,20 @@
 //   }
 //   render_wall(mlx, ray); // render the wall
 //   ray++; // next ray
-//   mlx->ray->ray_ngl += (mlx->ply->fov_rd / S_W); // next angle
+//   mlx->ray->ray_ngl += (FOV_RAD / WIDTH); // next angle
 //  }
 // }
 
-// //##############################################################################################//
-// //############################## START THE GAME AND THE GAME LOOP ##############################//
-// //##############################################################################################//
 
-// void game_loop(void *ml) // game loop
+// void v()
 // {
-//  t_mlx *mlx;
-
-//  mlx = ml; // cast to the mlx structure
-//  mlx_delete_image(mlx->mlx_p, mlx->img); // delete the image
-//  mlx->img = mlx_new_image(mlx->mlx_p, S_W, S_H); // create new image
-//  hook(mlx, 0, 0); // hook the player
-//  cast_rays(mlx); // cast the rays
-//  mlx_image_to_window(mlx->mlx_p, mlx->img, 0, 0); // put the image to the window
-// }
-
-// void init_the_player(t_mlx mlx) // init the player structure
-// {
-//  mlx.ply->plyr_x = mlx.dt->p_x * TILE_SIZE + TILE_SIZE / 2; // player x position in pixels in the center of the tile
-//  mlx.ply->plyr_y = mlx.dt->p_y * TILE_SIZE + TILE_SIZE / 2; // player y position in pixels in the center of the tile
-//  mlx.ply->fov_rd = (FOV * M_PI) / 180; // field of view in radians
-//  mlx.ply->angle = M_PI; // player angle
-//  //the rest of the variables are initialized to zero by calloc
-// }
-
-// void start_the_game(t_data *dt) // start the game
-// {
-//  t_mlx mlx;
-
-//  mlx.dt = dt; // init the mlx structure
-//  mlx.ply = calloc(1, sizeof(t_player)); // init the player structure i'm using calloc to initialize the variables to zero
-//  mlx.ray = calloc(1, sizeof(t_ray)); // init the ray structure
-//  mlx.mlx_p = mlx_init(S_W, S_H, "Cub3D", 0); // init the mlx pointer
-//  init_the_player(mlx); // init the player structure
-//  mlx_loop_hook(mlx.mlx_p, &game_loop, &mlx); // game loop
-//  mlx_key_hook(mlx.mlx_p, &mlx_key, &mlx); // key press and release
-//  mlx_loop(mlx.mlx_p); // mlx loop
-//  ft_exit(&mlx); // exit the game
-// }
-
-
-// void game_loop(void *ml) // game loop
-// {
-//  t_mlx *mlx;
-
-//  mlx = ml; // cast to the mlx structure
-//  mlx_delete_image(mlx->mlx_p, mlx->img); // delete the image
-//  mlx->img = mlx_new_image(mlx->mlx_p, S_W, S_H); // create new image
-//  hook(mlx, 0, 0); // hook the player
-//  cast_rays(mlx); // cast the rays
-//  mlx_image_to_window(mlx->mlx_p, mlx->img, 0, 0); // put the image to the window
-// }
-
-// void init_the_player(t_mlx mlx) // init the player structure
-// {
-//  mlx.ply->plyr_x = mlx.dt->p_x * TILE_SIZE + TILE_SIZE / 2; // player x position in pixels in the center of the tile
-//  mlx.ply->plyr_y = mlx.dt->p_y * TILE_SIZE + TILE_SIZE / 2; // player y position in pixels in the center of the tile
-//  mlx.ply->fov_rd = (FOV * M_PI) / 180; // field of view in radians
-//  mlx.ply->angle = M_PI; // player angle
-//  //the rest of the variables are initialized to zero by calloc
-// }
-
-// void start_the_game(t_data *dt) // start the game
-// {
-//  t_mlx mlx;
-
-//  mlx.dt = dt; // init the mlx structure
-//  mlx.ply = calloc(1, sizeof(t_player)); // init the player structure i'm using calloc to initialize the variables to zero
-//  mlx.ray = calloc(1, sizeof(t_ray)); // init the ray structure
-//  mlx.mlx_p = mlx_init(S_W, S_H, "Cub3D", 0); // init the mlx pointer and put a window to the screen
-//  init_the_player(mlx); // init the player structure
-//  mlx_loop_hook(mlx.mlx_p, &game_loop, &mlx); // game loop continuously call a specified function to update the game state and render the frames.
-//  mlx_key_hook(mlx.mlx_p, &mlx_key, &mlx); // key press and release
-//  mlx_loop(mlx.mlx_p); // mlx loop
-//  ft_exit(&mlx); // exit the game
-// }
-
-// //################################################################################################//
-// //############################## THE MAIN FUNCTION AND INIT THE MAP ##############################//
-// //################################################################################################//
-
-// t_data *init_argumet() // init the data structure
-// {
-//  t_data *dt = calloc(1, sizeof(t_data)); // init the data structure
-//  dt->map2d = calloc(10, sizeof(char *)); // init the map
-//  dt->map2d[0] = strdup("1111111111111111111111111"); //fill the map
-//  dt->map2d[1] = strdup("1000000000000000000100001");
-//  dt->map2d[2] = strdup("1001000000000P00000000001");
-//  dt->map2d[3] = strdup("1001000000000000001000001");
-//  dt->map2d[4] = strdup("1001000000000000001000001");
-//  dt->map2d[5] = strdup("1001000000100000001000001");
-//  dt->map2d[6] = strdup("1001000000000000001000001");
-//  dt->map2d[7] = strdup("1001000000001000001000001");
-//  dt->map2d[8] = strdup("1111111111111111111111111");
-//  dt->map2d[9] = NULL;
-//  dt->p_y = 3; // player y position in the map
-//  dt->p_x = 14; // player x position in the map
-//  dt->w_map = 25; // map width
-//  dt->h_map = 9; // map height
-//  return (dt); // return the data structure
+//  system("leaks mini_cub3D");
 // }
 
 // int main() // main function
 // {
 //  t_data *data;
-
+//  atexit(v);
 //  data = init_argumet(); // init the data structure
 //  start_the_game(data); // start the game
 //  return 0;
