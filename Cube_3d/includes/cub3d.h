@@ -6,7 +6,7 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 15:39:56 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/05 02:02:58 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/07 03:50:36 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,27 @@
 # define ROTATION_SPEED 0.045 // rotation speed
 # define PLAYER_SPEED 3 // player speed
 
+# define HORIZONTAL			0
+# define VERTICAL			1
+# define NORTH				0
+# define SOUTH				1
+# define EAST				2
+# define WEST				3
+
+
+
+typedef struct s_falgs
+{
+	bool		rot_flag;
+	int			l_r;
+	int			u_d;
+}	t_flags;
+
 typedef struct s_player //the player structure
 {
 	int		plyr_x;
 	int		plyr_y;
 	double	init_direction;
-	int		rot_flag;
-	int		l_r;
-	int		u_d;
 }					t_player;
 
 typedef struct s_rayon //the ray structure
@@ -68,14 +81,14 @@ typedef struct map //the data structure
 
 }		t_map;
 
-typedef struct s_mlx
+typedef struct s_gen
 {
 	mlx_image_t		*img;
-	mlx_t			*mlx_p;
+	mlx_t			*mlx;
 	t_rayon			*ray;
 	t_map			*map;
-	t_player		*ply;
-}				t_mlx;
+	t_player		*p;
+}				t_gen;
 
 
 
@@ -83,15 +96,13 @@ typedef struct s_mlx
 
 
 // t_data *init_argumet() ;
-void start_the_game(t_map *dt);
-void hook(t_mlx *mlx, double move_x, double move_y);
-void cast_rays(t_mlx *mlx);
-void mlx_key(mlx_key_data_t keydata, void *ml) ;
-void game_loop(void *ml) ;
-void ft_exit(t_mlx *mlx)  ;
-void init_the_player(t_mlx mlx) ;// init the player structure
-char	**ft_splitmaps(int fd);
-
-
-
+// void start_the_game(t_map *dt);
+// void hook(t_mlx *mlx, double move_x, double move_y);
+// void cast_rays(t_mlx *mlx);
+// void mlx_key(mlx_key_data_t keydata, void *ml) ;
+// void game_loop(void *ml) ;
+// void ft_exit(t_mlx *mlx)  ;
+// void init_the_player(t_mlx mlx) ;// init the player structure
+// char	**ft_splitmaps(int fd);
+t_gen	*init_args(void);
 #endif

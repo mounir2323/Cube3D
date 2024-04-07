@@ -6,8 +6,8 @@ CFLAGS		=	-Wall -Wextra -Werror -g -I/path/to/minilibx -Iincludes -O3 -ffast-mat
 GLFW_FLAGS	=	-ldl -lglfw 
 LIBFT_PATH	=	libs/libft/libft.a
 MLX_PATH	=	libs/MLX42/build/libmlx42.a
-# SRC			=	main.c src/init.c test.c ft_getmap.c src/raycast.c src/mytest.c
-SRC			=	main.c 
+# SRC			=	main.c  test.c ft_getmap.c src/raycast.c src/mytest.c
+SRC			=	main.c src/init.c
 OBJ			=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 OBJ_DIR		=	obj
 
