@@ -6,37 +6,41 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:10 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/20 21:20:06 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/28 00:52:20 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-int	inter_check(double *inter, float ngl, float *sp, bool ishorizon)
+int	check_intr(t_ray_info *info, float ngl, bool flag, bool ishorizon)
 {
-	if (ishorizon == true)
+	if (ishorizon)
 	{
 		if (ngl > 0 && ngl < M_PI)
 		{
-			*inter += TILE_SIZE;
+			if (flag == VECT)
+				info->vect += TILE_SIZE;
+			else
+				info->horiz += TILE_SIZE;
 			return (-1);
 		}
-		*sp *= -1;
 	}
 	else
 	{
 		if (!(ngl > M_PI_2 && ngl < 3 * M_PI_2))
 		{
-			*inter += TILE_SIZE;
+			if (flag == VECT)
+				info->vect += TILE_SIZE;
+			else
+				info->horiz += TILE_SIZE;
 			return (-1);
 		}
-		*sp *= -1;
 	}
+	info->step *= -1;
 	return (1);
 }
 
-int	hit (float x, float y, t_general *dt)
+int	hit(float x, float y, t_general *dt)
 {
 	int	x_on_map;
 	int	y_on_map;
@@ -55,72 +59,55 @@ int	hit (float x, float y, t_general *dt)
 	return (1);
 }
 
-
 float	get_horizontal_inter(t_general *gen, float angl)
 {
-	float	stp_x;
-	float	stp_y;
 	int		pix;
 	double	res;
 
-	stp_y = TILE_SIZE;
-	stp_x = TILE_SIZE / tan(angl);
-	gen->ray->horiz[Y] = floor(gen->ply->pix_y / TILE_SIZE) * TILE_SIZE;
-	pix = inter_check(&gen->ray->horiz[Y], angl, &stp_y, true);
-	gen->ray->horiz[X] = gen->ply->pix_x
-		+ (gen->ray->horiz[Y] - gen->ply->pix_y) / tan(angl);
-	if ((unit_circle(angl, Y) && stp_x > 0)
-		|| (!unit_circle(angl, Y) && stp_x < 0))
-		stp_x *= -1;
-	while (hit(gen->ray->horiz[X], gen->ray->horiz[Y] - pix, gen))
+	gen->info[Y].step = TILE_SIZE;
+	gen->info[X].step = gen->info[Y].step / tan(angl);
+	gen->info[Y].horiz = floor(gen->ply->pix_y / gen->info[Y].step)
+		* gen->info[Y].step;
+	pix = check_intr(&gen->info[Y], angl, HORIZ, true);
+	gen->info[X].horiz = gen->ply->pix_x
+		+ (gen->info[Y].horiz - gen->ply->pix_y) / tan(angl);
+	if ((u_circle(angl, Y) && gen->info[X].step > 0)
+		|| (!u_circle(angl, Y) && gen->info[X].step < 0))
+		gen->info[X].step *= -1;
+	while (hit(gen->info[X].horiz, gen->info[Y].horiz - pix, gen))
 	{
-		gen->ray->horiz[X] += stp_x;
-		gen->ray->horiz[Y] += stp_y;
+		gen->info[X].horiz += gen->info[X].step;
+		gen->info[Y].horiz += gen->info[Y].step;
 	}
-	res = sqrt(pow(gen->ray->horiz[X] - gen->ply->pix_x, 2)
-			+ pow(gen->ray->horiz[Y] - gen->ply->pix_y, 2));
+	res = sqrt(pow(gen->info[X].horiz - gen->ply->pix_x, 2)
+			+ pow(gen->info[Y].horiz - gen->ply->pix_y, 2));
 	return (res);
 }
 
-
 double	get_vertical_inter(t_general *gen, float angl)
 {
-    float	stp_x;
-    float	stp_y;
-    int		pix;
+	int		pix;
 	double	res;
 
-    stp_x = TILE_SIZE;
-    stp_y = TILE_SIZE * tan(angl);
-    gen->ray->vect[X] = floor(gen->ply->pix_x / TILE_SIZE) * TILE_SIZE;
-    pix = inter_check(&gen->ray->vect[X], angl, &stp_x, 0);
-    gen->ray->vect[Y] = gen->ply->pix_y + (gen->ray->vect[X] - gen->ply->pix_x) * tan(angl);
-    if ((unit_circle(angl, X) && stp_y < 0) || (!unit_circle(angl, X) && stp_y > 0))
-        stp_y *= -1;
-    while (hit(gen->ray->vect[X] - pix, gen->ray->vect[Y], gen))
-    {
-        gen->ray->vect[X] += stp_x;
-        gen->ray->vect[Y] += stp_y;
-    }
-	res = sqrt(pow(gen->ray->vect[X] - gen->ply->pix_x, 2) 
-			+ pow(gen->ray->vect[Y] - gen->ply->pix_y, 2));
-    return (res);
-}
-
-
-
-void	h_v_update(t_general *gen, double h_inter, double v_inter)
-{
-	gen->ray->flag = false;
-	if (v_inter <= h_inter)
-		gen->ray->distance = v_inter;
-	else
+	gen->info[X].step = TILE_SIZE;
+	gen->info[Y].step = gen->info[X].step * tan(angl);
+	gen->info[X].vect = floor(gen->ply->pix_x / gen->info[X].step)
+		* gen->info[X].step;
+	pix = check_intr(&gen->info[X], angl, VECT, 0);
+	gen->info[Y].vect = gen->ply->pix_y
+		+ (gen->info[X].vect - gen->ply->pix_x) * tan(angl);
+	if ((u_circle(angl, X) && gen->info[Y].step < 0)
+		|| (!u_circle(angl, X) && gen->info[Y].step > 0))
+		gen->info[Y].step *= -1;
+	while (hit(gen->info[X].vect - pix, gen->info[Y].vect, gen))
 	{
-		gen->ray->distance = h_inter;
-		gen->ray->flag = true;
+		gen->info[X].vect += gen->info[X].step;
+		gen->info[Y].vect += gen->info[Y].step;
 	}
+	res = sqrt(pow(gen->info[X].vect - gen->ply->pix_x, 2)
+			+ pow(gen->info[Y].vect - gen->ply->pix_y, 2));
+	return (res);
 }
-
 
 void	ray_cst(t_general *gen)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map_validity.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schibane <schibane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 02:25:43 by schibane          #+#    #+#             */
-/*   Updated: 2024/04/11 13:10:48 by schibane         ###   ########.fr       */
+/*   Updated: 2024/04/28 00:42:41 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_chracters(t_config *conf)
 	while (lst->next)
 	{
 		line = (char *)lst->content;
-		i = 1;	
+		i = 1;
 		while (line[i + 1])
 		{
 			if (!is_char_valid(line[i]))
@@ -66,7 +66,6 @@ void	mark_reachable(char **map, int i, int j, t_config *conf)
 	mark_reachable(map, i + 1, j, conf);
 	mark_reachable(map, i, j - 1, conf);
 	mark_reachable(map, i, j + 1, conf);
-
 }
 
 int	check_map_validity(t_config *conf)

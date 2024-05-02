@@ -6,7 +6,7 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:48:37 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/20 20:31:13 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/28 00:44:28 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	is_valid_move(t_general *mlx, int new_x, int new_y)
 		return (false);
 	if (mlx->map->map_2d[j][i] != '1' &&
 		mlx->map->map_2d[j][mlx->ply->pix_x / TILE_SIZE] != '1' &&
-		mlx->map->map_2d[mlx->ply->pix_y / TILE_SIZE][i] != '1') 
+		mlx->map->map_2d[mlx->ply->pix_y / TILE_SIZE][i] != '1')
 		return (true);
 	return (false);
 }
@@ -52,7 +52,6 @@ void	move(t_general *mlx, double x_mv, double y_mv)
 
 	new_x = roundf(mlx->ply->pix_x + x_mv);
 	new_y = roundf(mlx->ply->pix_y + y_mv);
-
 	if (is_valid_move(mlx, new_x, new_y))
 	{
 		mlx->ply->pix_x = new_x;
@@ -92,4 +91,3 @@ void	move_hook(t_general *dt, double x_mv, double y_mv)
 	}
 	move(dt, x_mv, y_mv);
 }
-

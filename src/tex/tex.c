@@ -6,14 +6,11 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:20:26 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/20 19:41:09 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/28 00:29:52 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "cub3d.h"
-
-
 
 int	load_png(t_mlx *ml, t_config init)
 {
@@ -32,10 +29,8 @@ int	load_png(t_mlx *ml, t_config init)
 	return (EXIT_SUCCESS);
 }
 
-
 mlx_texture_t	*get_textures(t_general *dt, int flag)
 {
-	
 	dt->ray->ray_ngl = nrm_ngl(dt->ray->ray_ngl);
 	if (flag == 0)
 	{

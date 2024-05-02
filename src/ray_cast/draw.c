@@ -5,44 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 14:51:49 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/20 19:37:21 by mtayebi          ###   ########.fr       */
+/*   Created: 2024/04/28 00:35:01 by mtayebi           #+#    #+#             */
+/*   Updated: 2024/04/28 00:57:20 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-double	x_wrapper(mlx_texture_t	*texture, t_general *gen, double pos)
-{
-	return((int)fmodf((pos *
-		(texture->width / TILE_SIZE)), texture->width));
-}
-
-int	get_x_o(mlx_texture_t	*texture, t_general *gen)
-{
-	if (gen->ray->flag == 1)
-		return (x_wrapper(texture, gen, gen->ray->horiz[X]));
-	return (x_wrapper(texture, gen, gen->ray->vect[Y]));
-}
-
-int	get_index(t_general *gen, mlx_texture_t	*texture, double y_o)
-{
-	uint32_t		*arr;
-
-	arr = (uint32_t *)texture->pixels;
-	return (arr[(int)y_o * texture->width + get_x_o(texture, gen)]);
-}
-
-double	get_y_o(t_general *gen, double factor)
-{
-	double			y_o;
-
-	y_o = (gen->params.top_pix - (HEIGHT / 2) +
-		 (gen->params.wall_h / 2)) * factor;
-	if (y_o < 0)
-		y_o = 0;
-	return (y_o);
-}
 
 void	drawing_sky_flr(t_general *gen, int ray)
 {
@@ -64,7 +32,7 @@ void	drawing_sky_flr(t_general *gen, int ray)
 
 void	walls_rend(t_general *gen, int *r)
 {
-	get_params(gen, *r);
+	get_params(gen);
 	drawing_walls(gen, *r);
 	drawing_sky_flr(gen, *r);
 	gen->ray->ray_ngl += (FOV_RAD / WIDTH);
@@ -85,7 +53,7 @@ void	drawing_walls(t_general *gen, int ray)
 	while (++tmp < gen->params.bottom_p)
 	{
 		mlx_put_pixel(gen->mlx->img, ray, tmp,
-			 reverse_bytes(get_index(gen, tex, y)));
+			reverse_bytes(get_index(gen, tex, y)));
 		y += fct;
 	}
 }

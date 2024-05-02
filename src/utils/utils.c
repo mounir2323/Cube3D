@@ -6,7 +6,7 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 22:15:59 by schibane          #+#    #+#             */
-/*   Updated: 2024/04/20 19:28:38 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/28 00:56:07 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_coor	get_player_pos(char **arr)
 	int		j;
 
 	i = 0;
+	pos.i = 0;
 	while (arr[i])
 	{
 		j = 0;
@@ -89,6 +90,19 @@ void	get_map_normal(char **map)
 				map[i][j] = '0';
 			j ++;
 		}
+		i ++;
+	}
+}
+
+void	replace_tab(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
 		i ++;
 	}
 }

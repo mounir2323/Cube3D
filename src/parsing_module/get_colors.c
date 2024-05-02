@@ -6,7 +6,7 @@
 /*   By: schibane <schibane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:27:28 by schibane          #+#    #+#             */
-/*   Updated: 2024/04/07 00:11:51 by schibane         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:41:16 by schibane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	**get_color(t_config *conf, char *str, int fd)
 	line = read_lines(fd);
 	if (line)
 	{
+		replace_tab(line);
 		splt = ft_split(line, ' ');
 		if (!splt)
 		{

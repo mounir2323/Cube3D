@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handel_keys.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: schibane <schibane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 18:29:53 by mtayebi           #+#    #+#             */
-/*   Updated: 2024/04/20 20:11:57 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/21 22:21:42 by schibane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	handle_key_press(mlx_key_data_t keydata, t_general *dt)
 {
-
 	if (keydata.key == A && (keydata.action == MLX_PRESS))
 		dt->ply->mv.mv[WE] = -1;
 	else if (keydata.key == D && (keydata.action == MLX_PRESS))

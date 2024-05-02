@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schibane <schibane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 02:15:33 by schibane          #+#    #+#             */
-/*   Updated: 2024/04/11 13:17:06 by schibane         ###   ########.fr       */
+/*   Updated: 2024/04/28 00:42:03 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	get_texture(t_config *conf, char *str, int fd, char **text)
 	}
 	if (line)
 	{
+		replace_tab(line);
 		splt = ft_split(line, ' ');
 		if (!splt)
 		{
@@ -56,12 +57,12 @@ void	get_all_textures(t_config *conf, int fd)
 
 void	print_lst(t_list *lst)
 {
-	t_list *l;
+	t_list	*l;
 
 	l = lst;
 	while (l)
 	{
-		printf("%s\n",(char *)l->content);
+		printf("%s\n", (char *) l->content);
 		l = l->next;
 	}
 }

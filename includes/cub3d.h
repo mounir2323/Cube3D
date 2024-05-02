@@ -6,7 +6,7 @@
 /*   By: mtayebi <mtayebi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:26:01 by schibane          #+#    #+#             */
-/*   Updated: 2024/04/20 21:12:39 by mtayebi          ###   ########.fr       */
+/*   Updated: 2024/04/28 00:53:53 by mtayebi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,17 @@
 # define WE 2
 # define SO 3 
 
+# define VECT 0
+# define HORIZ 1
+
 # define ROT_LEFT 0 
 # define ROT_RIGHT 1
-
 
 typedef struct s_move
 {
 	int		mv[4];
 	int		rot;
 }			t_move;
-
 
 typedef struct s_player
 {
@@ -66,7 +67,6 @@ typedef struct s_player
 	t_move	mv;
 	double	init_dir;
 }				t_player;
-
 
 typedef struct s_coor
 {
@@ -86,16 +86,18 @@ typedef struct s_map //the data structure
 	uint32_t	clr_ceil;
 }	t_map;
 
+typedef struct s_info
+{
+	float	step;
+	double	inter;	
+}			t_info;
+
 typedef struct s_rayon //the ray structure
 {
 	double	ray_ngl;
-	double	horiz[2];
-	double	vect[2];
 	double	distance;
 	bool	flag;
 }		t_rayon;
-
-
 
 typedef struct s_mlx //the mlx structure
 {
@@ -111,6 +113,13 @@ typedef struct s_params
 	double	top_pix;
 }	t_params;
 
+typedef struct s_ray_info
+{
+	double	horiz;
+	double	vect;
+	float	step;
+}	t_ray_info;
+
 typedef struct s_general
 {
 	t_rayon		*ray;
@@ -118,8 +127,8 @@ typedef struct s_general
 	t_map		*map;
 	t_mlx		*mlx;
 	t_params	params;
+	t_ray_info	info[2];
 }				t_general;
-
 
 typedef struct s_config
 {
@@ -134,9 +143,8 @@ typedef struct s_config
 	t_coor		player_pos;
 	int			biggest_mapline;
 	t_general	*dt;
+	int			fd;
 }	t_config;
-
-
 
 int				parsing(t_config *conf, int fd);
 int				str_tab_len(char **tab);
@@ -144,16 +152,20 @@ int				check_map_validity(t_config *conf);
 int				is_char_player(char c);
 int				load_png(t_mlx *ml, t_config init);
 int				reverse_bytes(int c);
+int				u_circle(float angle, int axis);
+int				get_biggest_line(t_list *map_lst);
+int				get_index(t_general *gen, mlx_texture_t	*texture, double y_o);
+double			get_y_o(t_general *gen, double factor);
 void			clean_exit(int status, char *msg, t_config *config);
 void			init_gen(t_general *dt);
 void			print_general(const t_general *general);
 void			drawing_walls(t_general *gen, int ray);
-void			get_params(t_general *gen, int ray);
+void			get_params(t_general *gen);
 void			keys(mlx_key_data_t keydata, void *param);
 void			rotation_hook(t_general *mlx);
 void			move_hook(t_general *dt, double move_x, double move_y);
 void			get_colors(t_config *conf, int fd);
-void			launch_game(t_general *dt, t_config cnf);
+void			launch_game(t_config cnf);
 void			free_tab_str(char **tab);
 void			read_map(int fd, t_config *conf);
 void			fill_up_spaces(t_config *conf);
@@ -162,16 +174,22 @@ void			get_map_normal(char **map);
 void			walls_rend(t_general *gen, int *r);
 void			drawing_sky_flr(t_general *gen, int ray);
 void			ray_cst(t_general *dt);
+void			h_v_update(t_general *gen, double h_inter, double v_inter);
+void			read_map(int fd, t_config *conf);
+void			add_bottom_border(t_config *conf);
+void			add_top_border(t_config *conf);
+void			replace_tab(char *str);
 char			*get_next_line(int fd);
 char			**list_to_array(t_config *conf);
+char			*add_side_borders_fill_space(t_config *conf, t_list *current);
 float			nrm_ngl(float angle);
-int				unit_circle(float angle, int axis);
 t_coor			get_player_pos(char **arr);
 t_rayon			*init_ray(t_config cnf);
 t_map			*init_map(t_config cnf);
 t_player		*init_ply(t_map *map, t_config cnf);
 mlx_texture_t	*get_textures(t_general *dt, int flag);
 mlx_texture_t	*get_textures(t_general *dt, int flag);
+
 
 
 #endif
